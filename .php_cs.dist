@@ -1,0 +1,23 @@
+<?php
+$header = <<<EOF
+Today is the tomorrow you promised to act yesterday.
+EOF;
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules(array(
+        '@Symfony' => true,
+        'header_comment' => array('header' => $header),
+        'array_syntax' => array('syntax' => 'short'),
+        'ordered_imports' => true,
+        'no_useless_else' => true,
+        'no_useless_return' => true
+    ))
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+                         ->in(__DIR__)
+                         ->exclude('vendor')
+                         ->name('*.php')
+                         ->ignoreDotFiles(true)
+                         ->ignoreVCS(true)
+    );

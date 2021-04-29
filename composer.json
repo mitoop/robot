@@ -1,0 +1,22 @@
+{
+    "name": "mitoop/robot",
+    "description": "发送机器人消息 支持钉钉, 企业微信, 飞书",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "徐夏冰",
+            "email": "me@mitoop.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^6.2 || ^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mitoop\\Robot\\": "src"
+        }
+    }
+}
