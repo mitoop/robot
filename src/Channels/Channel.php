@@ -6,6 +6,7 @@
 
 namespace Mitoop\Robot\Channels;
 
+use Mitoop\Robot\Support\Arr;
 use Mitoop\Robot\Support\Config;
 use Mitoop\Robot\Traits\HttpRequestTrait;
 
@@ -27,7 +28,9 @@ abstract class Channel
 
     protected function getMentionedList($at)
     {
-        return !empty($at) ? $at : $this->config->get('at', []);
+        $at = !empty($at) ? $at : $this->config->get('at', []);
+
+        return Arr::wrap($at);
     }
 
     protected function getTimeout()
@@ -35,11 +38,16 @@ abstract class Channel
         return $this->config->get('timeout') ?: 3;
     }
 
+    protected function exportVar($var)
+    {
+        return is_array($var) ? var_export($var, true) : $var;
+    }
+
     protected function formatGeneralTextMessage($title, $content)
     {
         $message = $title."\n\n";
         foreach ($content as $k => $v) {
-            $v = is_array($v) ? var_export($v, true) : $v;
+            $v = $this->exportVar($v);
             $message .= is_int($k) ? $v : sprintf('%s => %s', $k, $v);
             $message .= "\n";
         }

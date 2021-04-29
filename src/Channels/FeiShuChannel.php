@@ -69,8 +69,7 @@ class FeiShuChannel extends Channel
     {
         $contentArr = [];
         foreach ($content as $k => $v) {
-            $v = is_array($v) ? var_export($v, true) : $v;
-
+            $v = $this->exportVar($v);
             $contentArr[] = [
                 [
                     'tag' => 'text',

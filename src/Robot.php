@@ -8,6 +8,7 @@ namespace Mitoop\Robot;
 
 use Closure;
 use Mitoop\Robot\Exceptions\UnsupportedException;
+use Mitoop\Robot\Support\Arr;
 use Mitoop\Robot\Support\Config;
 
 class Robot
@@ -51,28 +52,26 @@ class Robot
      *
      * @param string       $title   标题
      * @param array|string $content 消息
-     * @param array        $at      @人员 此处设置会覆盖配置中的`at`
+     * @param array|string $at      @人员 此处设置会覆盖配置中的`at`
      *
      * @return array
      */
-    public function sendTextMsg($title, $content = [], array $at = [])
+    public function sendTextMsg($title, $content = [], $at = [])
     {
-        $content = is_array($content) ? $content : [$content];
-
-        return $this->getChannel()->sendTextMsg($title, $content, $at);
+        return $this->getChannel()->sendTextMsg($title, Arr::wrap($content), Arr::wrap($at));
     }
 
     /**
      * 发送markdown消息.
      *
-     * @param string $content markdown文本
-     * @param array  $at      @人员 此处设置会覆盖配置中的`at`
+     * @param string       $content markdown文本
+     * @param array|string $at      @人员 此处设置会覆盖配置中的`at`
      *
      * @return array
      */
-    public function sendMarkdownMsg($content, array $at = [])
+    public function sendMarkdownMsg($content, $at = [])
     {
-        return $this->getChannel()->sendMarkdownMsg($content, $at);
+        return $this->getChannel()->sendMarkdownMsg($content, Arr::wrap($at));
     }
 
     public function extend($name, Closure $closure)
@@ -111,7 +110,7 @@ class Robot
     {
         $group = $this->group ?: $this->config->get('default');
 
-        return is_array($group) ? $group : [$group];
+        return Arr::wrap($group);
     }
 
     /**

@@ -30,6 +30,10 @@ class Messenger
         $this->robot = $robot;
     }
 
+    /**
+     * @throws \Mitoop\Robot\Exceptions\InvalidArgumentException
+     * @throws \Mitoop\Robot\Exceptions\UnsupportedException
+     */
     protected function getChannel($channelGroup)
     {
         $robot = $this->robot;
