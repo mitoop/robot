@@ -7,6 +7,7 @@
 namespace Mitoop\Robot\Channels;
 
 use Mitoop\Robot\Exceptions\ChannelErrorException;
+use Mitoop\Robot\Exceptions\UnsupportedException;
 use Mitoop\Robot\Support\Arr;
 use Mitoop\Robot\Support\Config;
 use Mitoop\Robot\Traits\HttpRequestTrait;
@@ -34,6 +35,11 @@ abstract class Channel
         return $this->config->get('webhook');
     }
 
+    protected function supportMarkdown()
+    {
+        return true;
+    }
+
     /**
      * @throws \Mitoop\Robot\Exceptions\ChannelErrorException
      */
@@ -54,9 +60,14 @@ abstract class Channel
 
     /**
      * @throws \Mitoop\Robot\Exceptions\ChannelErrorException
+     * @throws \Mitoop\Robot\Exceptions\UnsupportedException
      */
     public function sendMarkdownMsg($content, $at)
     {
+        if (!$this->supportMarkdown()) {
+            throw new UnsupportedException(sprintf('%s不支持markdown消息', $this->get));
+        }
+
         $message = $this->formatMarkdownMessage($this->getMarkdownContent($content), $this->getMentionedList($at));
 
         $response = $this->postJson($this->getWebhook(), $message, [

@@ -6,8 +6,6 @@
 
 namespace Mitoop\Robot\Channels;
 
-use Mitoop\Robot\Exceptions\UnsupportedException;
-
 class FeiShuChannel extends Channel
 {
     protected function getName()
@@ -20,12 +18,9 @@ class FeiShuChannel extends Channel
         return is_array($result) && isset($result['StatusCode']) && 0 == $result['StatusCode'];
     }
 
-    /**
-     * @throws \Mitoop\Robot\Exceptions\UnsupportedException
-     */
-    public function sendMarkdownMsg($content, $at)
+    protected function supportMarkdown()
     {
-        throw new UnsupportedException('飞书目前不支持markdown消息');
+        return false;
     }
 
     protected function generateSign($secret)
