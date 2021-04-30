@@ -149,16 +149,16 @@ $robot->group(['dingding.jishu', 'wecom.jishu'])
 
 ## 发送群组
 
-默认向 `default` 中的群组发送消息，如果想向其他群组发送消息，调用 `group` 方法即可，支持多个群组发送。
+默认向 `default` 中的群组发送消息，如果向其他群组发送消息，调用 `group` 方法即可，支持多个群组发送。
 
 ```php
 $robot->group(['feishu.kefu', 'wecom.jishu'])
       ->sendTextMsg('...', [...]);
 ```
 
-## 发送时@其他成员
+## 消息中@其他成员
 
-消息默认会@对应群组配置中 `at` 里的成员，如果要@其他成员 只需传入本次消息的人员即可 
+消息默认会@对应群组配置中 `at` 里的成员，如果要自定义@其他成员，传入即 `at` 参数即可 
 
 `sendTextMsg` 和 `sendMarkdownMsg` 都支持传入 `at` 参数
 
@@ -176,7 +176,7 @@ $at = function(Channel $channel){
       };
 
 $robot->group(['feishu.kefu', 'wecom.jishu'])
-      ->sendTextMsg('...', [...], $at); // 这里的 $at 将会覆盖group配置中的 `at`
+      ->sendTextMsg('...', [...], $at); // 这里的 $at 将会覆盖 group 配置中的 `at`
 ```
 
 ## 返回值
