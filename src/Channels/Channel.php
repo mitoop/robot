@@ -65,7 +65,7 @@ abstract class Channel
     public function sendMarkdownMsg($content, $at)
     {
         if (!$this->supportMarkdown()) {
-            throw new UnsupportedException(sprintf('%s不支持markdown消息', $this->get));
+            throw new UnsupportedException(sprintf('%s不支持markdown消息', $this->getName()));
         }
 
         $message = $this->formatMarkdownMessage($this->getMarkdownContent($content), $this->getMentionedList($at));
