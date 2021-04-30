@@ -1,6 +1,6 @@
 <h1 align="center">Robot</h1>
 
-<p align="center">🤖️ 轻松发送钉钉/企业微信/飞书机器人信息</p>
+<p align="center">🤖️ 轻松给钉钉/企业微信/飞书机器人发送消息</p>
 
 
 ## 特点
