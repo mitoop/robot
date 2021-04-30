@@ -238,6 +238,17 @@ $robot->group('my-channel.jishu')
 - [企业微信](https://work.weixin.qq.com/api/doc/90000/90136/91770)
 - [飞书](https://open.feishu.cn/document/ukTMukTMukTM/uMDMxEjLzATMx4yMwETM)
 
+## ⚠️注意
+
+1. 服务商发送频率限制 
+   1. 飞书：客服反馈目前没有频率限制
+   2. 企业微信：每个机器人发送的消息不能超过20条/分钟 [点击查看详情](https://work.weixin.qq.com/api/doc/90000/90136/91770#%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E9%A2%91%E7%8E%87%E9%99%90%E5%88%B6)
+   3. 钉钉：每个机器人每分钟最多发送20条。如果超过20条，会限流10分钟 [点击查看详情](https://developers.dingtalk.com/document/app/invocation-frequency-limit)
+2. 消息大小(消息字数太多，可能会发送失败)
+   1. 飞书：建议 JSON 的长度不超过 30k [点击查看详情](https://open.feishu.cn/document/ugTN1YjL4UTN24CO1UjN/uYzN1YjL2cTN24iN3UjN)
+   2. 企业微信：未找到文档 不建议太大
+   3. 钉钉：未找到文档 不建议太大
+
 ## License
 
 MIT
