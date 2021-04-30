@@ -14,6 +14,12 @@ use Mitoop\Robot\Exceptions\ChannelErrorException;
 use Mitoop\Robot\Exceptions\InvalidArgumentException;
 use Mitoop\Robot\Support\Config;
 
+/**
+ * Class Messenger.
+ *
+ * @method sendTextMsg($title, $content, $at)
+ * @method sendMarkdownMsg($content, $at)
+ */
 class Messenger
 {
     const STATUS_SUCCESS = 'success';
@@ -52,8 +58,10 @@ class Messenger
             throw new InvalidArgumentException('未找到group: '.$channelGroup);
         }
 
+        $groupConfig['group'] = $channelGroup;
         $groupConfig['env'] = $robotConfig->get('env');
-        $groupConfig['timeout'] = $groupConfig['timeout'] ?: $robotConfig->get('timeout');
+        $groupConfig['timeout'] = isset($groupConfig['timeout']) ? $groupConfig['timeout'] : $robotConfig->get('timeout');
+
         $groupConfig = new Config($groupConfig);
 
         switch ($channel) {
@@ -80,19 +88,21 @@ class Messenger
                 'status' => self::STATUS_FAILURE,
                 'exception_msg' => $e->getMessage(),
                 'exception_file' => sprintf('%s:%s', $e->getFile(), $e->getLine()),
-                'raw_result' => $e->getRawResult(),
+                'response' => $e->getRawResponse(),
             ];
         } catch (\Exception $e) {
             return [
                 'status' => self::STATUS_FAILURE,
                 'exception_msg' => $e->getMessage(),
                 'exception_file' => sprintf('%s:%s', $e->getFile(), $e->getLine()),
+                'response' => null,
             ];
         } catch (\Throwable $e) {
             return [
                 'status' => self::STATUS_FAILURE,
                 'exception_msg' => $e->getMessage(),
                 'exception_file' => sprintf('%s:%s', $e->getFile(), $e->getLine()),
+                'response' => null,
             ];
         }
     }
@@ -110,17 +120,10 @@ class Messenger
         return $results;
     }
 
-    public function sendTextMsg($title, $content, $at)
+    public function __call($method, $args)
     {
-        return $this->send(function ($group) use ($title, $content, $at) {
-            return $this->getChannel($group)->sendTextMsg($title, $content, $at);
-        });
-    }
-
-    public function sendMarkdownMsg($content, $at)
-    {
-        return $this->send(function ($group) use ($content, $at) {
-            return $this->getChannel($group)->sendMarkdownMsg($content, $at);
+        return $this->send(function ($group) use ($method, $args) {
+            return $this->getChannel($group)->$method(...$args);
         });
     }
 }

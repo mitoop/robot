@@ -50,28 +50,28 @@ class Robot
     /**
      * 发送文本信息.
      *
-     * @param string       $title   标题
-     * @param array|string $content 消息
-     * @param array|string $at      @人员 此处设置会覆盖配置中的`at`
+     * @param string               $title   标题
+     * @param array|string         $content 消息
+     * @param array|string|Closure $at      @人员 此处设置会覆盖配置中的`at`
      *
      * @return array
      */
-    public function sendTextMsg($title, $content = [], $at = [])
+    public function sendTextMsg($title, $content, $at = [])
     {
-        return $this->getChannel()->sendTextMsg($title, Arr::wrap($content), Arr::wrap($at));
+        return $this->getChannel()->sendTextMsg($title, $content, $at);
     }
 
     /**
      * 发送markdown消息.
      *
-     * @param string       $content markdown文本
-     * @param array|string $at      @人员 此处设置会覆盖配置中的`at`
+     * @param string|Closure       $content markdown文本
+     * @param array|string|Closure $at      @人员 此处设置会覆盖配置中的`at`
      *
      * @return array
      */
     public function sendMarkdownMsg($content, $at = [])
     {
-        return $this->getChannel()->sendMarkdownMsg($content, Arr::wrap($at));
+        return $this->getChannel()->sendMarkdownMsg($content, $at);
     }
 
     public function extend($name, Closure $closure)

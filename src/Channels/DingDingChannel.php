@@ -6,44 +6,16 @@
 
 namespace Mitoop\Robot\Channels;
 
-use Mitoop\Robot\Exceptions\ChannelErrorException;
-
 class DingDingChannel extends Channel
 {
-    /**
-     * @throws \Mitoop\Robot\Exceptions\ChannelErrorException
-     */
-    public function sendTextMsg($title, $content, array $at)
+    protected function getName()
     {
-        $message = $this->formatTextMessage($title, $content, $at);
-
-        $result = $this->postJson($this->getWebhook(), $message, [
-            'Content-Type' => 'application/json',
-        ]);
-
-        if ($this->isOk($result)) {
-            return $result;
-        }
-
-        throw new ChannelErrorException('请求钉钉出错', 0, $result);
+        return 'dingding';
     }
 
-    /**
-     * @throws \Mitoop\Robot\Exceptions\ChannelErrorException
-     */
-    public function sendMarkdownMsg($content, array $at)
+    protected function isOk($result)
     {
-        $message = $this->formatMarkdownMessage($content, $at);
-
-        $result = $this->postJson($this->getWebhook(), $message, [
-            'Content-Type' => 'application/json',
-        ]);
-
-        if ($this->isOk($result)) {
-            return $result;
-        }
-
-        throw new ChannelErrorException('Robot请求钉钉出错', 0, $result);
+        return is_array($result) && isset($result['errcode']) && 0 == $result['errcode'];
     }
 
     protected function getWebhook()
@@ -66,7 +38,7 @@ class DingDingChannel extends Channel
             'text' => [
                 'content' => $message,
             ],
-            'at' => $this->getAt($at),
+            'at' => $this->generateDingDingMentionedList($at),
         ];
     }
 
@@ -82,18 +54,12 @@ class DingDingChannel extends Channel
                 'title' => '新消息...',
                 'text' => $content,
             ],
-            'at' => $this->getAt($at),
+            'at' => $this->generateDingDingMentionedList($at),
         ];
     }
 
-    protected function isOk($result)
+    protected function generateDingDingMentionedList($mentionedList)
     {
-        return is_array($result) && isset($result['errcode']) && 0 == $result['errcode'];
-    }
-
-    protected function getAt($at)
-    {
-        $mentionedList = $this->getMentionedList($at);
         $isAtAll = in_array('all', $mentionedList);
         if ($isAtAll) {
             $key = array_search('all', $mentionedList);

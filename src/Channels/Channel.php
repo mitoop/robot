@@ -6,6 +6,7 @@
 
 namespace Mitoop\Robot\Channels;
 
+use Mitoop\Robot\Exceptions\ChannelErrorException;
 use Mitoop\Robot\Support\Arr;
 use Mitoop\Robot\Support\Config;
 use Mitoop\Robot\Traits\HttpRequestTrait;
@@ -26,11 +27,54 @@ abstract class Channel
 
     abstract protected function isOk($result);
 
+    abstract protected function getName();
+
+    protected function getWebhook()
+    {
+        return $this->config->get('webhook');
+    }
+
+    /**
+     * @throws \Mitoop\Robot\Exceptions\ChannelErrorException
+     */
+    public function sendTextMsg($title, $content, $at)
+    {
+        $message = $this->formatTextMessage($title, $this->getTextContent($content), $this->getMentionedList($at));
+
+        $response = $this->postJson($this->getWebhook(), $message, [
+            'Content-Type' => 'application/json',
+        ]);
+
+        if ($this->isOk($response)) {
+            return $response;
+        }
+
+        throw new ChannelErrorException(sprintf('Robot请求%s出错', $this->config->get('group')), 0, $response);
+    }
+
+    /**
+     * @throws \Mitoop\Robot\Exceptions\ChannelErrorException
+     */
+    public function sendMarkdownMsg($content, $at)
+    {
+        $message = $this->formatMarkdownMessage($this->getMarkdownContent($content), $this->getMentionedList($at));
+
+        $response = $this->postJson($this->getWebhook(), $message, [
+            'Content-Type' => 'application/json',
+        ]);
+
+        if ($this->isOk($response)) {
+            return $response;
+        }
+
+        throw new ChannelErrorException(sprintf('Robot请求%s出错', $this->config->get('group')), 0, $response);
+    }
+
     protected function getMentionedList($at)
     {
-        $at = !empty($at) ? $at : $this->config->get('at', []);
+        $at = is_callable($at) ? $at($this) : (!empty($at) ? $at : $this->config->get('at', []));
 
-        return Arr::wrap($at);
+        return array_unique(Arr::wrap($at));
     }
 
     protected function getTimeout()
@@ -57,5 +101,15 @@ abstract class Channel
         }
 
         return $message;
+    }
+
+    protected function getMarkdownContent($content)
+    {
+        return is_callable($content) ? $content($this) : $content;
+    }
+
+    protected function getTextContent($content)
+    {
+        return Arr::wrap($content);
     }
 }

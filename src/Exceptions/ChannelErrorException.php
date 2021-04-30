@@ -10,17 +10,17 @@ use Exception;
 
 class ChannelErrorException extends Exception
 {
-    protected $raw;
+    protected $rawResponse;
 
-    public function __construct($message, $code, $raw)
+    public function __construct($message, $code, $rawResponse)
     {
         parent::__construct($message, $code);
 
-        $this->raw = $raw;
+        $this->rawResponse = $rawResponse;
     }
 
-    public function getRawResult()
+    public function getRawResponse()
     {
-        return $this->raw;
+        return $this->rawResponse;
     }
 }
