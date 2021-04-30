@@ -44,7 +44,8 @@ class FeiShuChannel extends Channel
             ];
         }
 
-        if (!empty($mentionedList = $this->getMentionedList($at))) {
+        $mentionedList = $at;
+        if (!empty($mentionedList)) {
             $at = [];
             foreach ($mentionedList as $mentioned) {
                 $at[] = [
