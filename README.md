@@ -137,7 +137,7 @@ use Mitoop\Robot\Channels\Channel;
 
 $robot->group(['dingding.jishu', 'wecom.jishu'])
       ->sendMarkdownMsg(function(Channel $channel)use($dingdingMessage, $wecomMessage){
-         if($channel->getName() == 'wecome') {
+         if($channel->getName() == 'wecom') {
              return $wecomMessage;
          }
          
