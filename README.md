@@ -158,7 +158,7 @@ $robot->group(['feishu.kefu', 'wecom.jishu'])
 
 ## 消息中@其他成员
 
-消息默认会@对应群组配置中 `at` 里的成员，如果要自定义@其他成员，传入即 `at` 参数即可 
+消息默认会@对应群组配置中 `at` 里的成员，如果要自定义@成员，传入 `at` 参数即可 
 
 `sendTextMsg` 和 `sendMarkdownMsg` 都支持传入 `at` 参数
 
