@@ -46,7 +46,7 @@ $config = [
                     'at' => ['all'],
                     // 【可选】默认不校验密钥 
                     'secret' => '', 
-                    // 【可选】默认不显示 是否显示服务器env 值为 true 或者 false 设置为 true, 消息头部将会显示服务器env
+                    // 【可选】默认不显示 bool值 是否显示服务器env 为 true 消息头部将会显示服务器env
                     'show_env' => true,
                     // 【可选】专门给这个群组制定HTTP请求超时时间 
                     'timeout' => 3, 
