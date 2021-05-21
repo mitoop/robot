@@ -110,6 +110,8 @@ class Robot
     {
         $group = $this->group ?: $this->config->get('default');
 
+        $this->group = null;
+
         return Arr::wrap($group);
     }
 
