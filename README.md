@@ -39,7 +39,7 @@ $config = [
             // demo 技术组
             'jishu' => [ 
                 // 【必填】技术组的 webhook 地址
-                'webhook' => 'https://open.feishu.cn/open-apis/bot/v2/hook/***',
+                'webhook' => '00000000-0000-0000-0000-000000000000',
                 // 【可选】分组默认 at 的成员 手机号或者/all
                 'at' => ['all'],
                 // 【可选】默认不校验密钥 
@@ -51,18 +51,18 @@ $config = [
             ],
             // demo 客服组
             'kefu' => [
-                'webhook' => 'https://open.feishu.cn/open-apis/bot/v2/hook/***',
+                'webhook' => '00000000-0000-0000-0000-000000000000',
                 'at' => ['all'],
             ],
             // demo boss组
             'boss' => [
-                'webhook' => 'https://open.feishu.cn/open-apis/bot/v2/hook/***',
+                'webhook' => '00000000-0000-0000-0000-000000000000',
             ]
         ],
         // 企业微信 配置解释参考飞书(企业微信没有密钥校验策略)
         'wecom' => [
             'jishu' => [
-                'webhook' => 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=***',
+                'webhook' => 'key',
                 'at' => ['all'], 
                 'show_env' => true,
                 'timeout' => 3, 
@@ -71,7 +71,7 @@ $config = [
         // 钉钉 配置解释参考飞书
         'dingding' => [
             'jishu' => [
-                'webhook' => 'https://oapi.dingtalk.com/robot/send?access_token=***',
+                'webhook' => 'access_token',
                 'at' => ['13888888888'],
                 'secret' => '',
                 'show_env' => true,
