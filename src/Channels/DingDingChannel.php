@@ -25,7 +25,7 @@ class DingDingChannel extends Channel
 
     protected function getWebhook()
     {
-        $webhook = $this->config->get('webhook');
+        $webhook = parent::getWebhook();
 
         if ($secret = $this->config->get('secret')) {
             $webhook = rtrim($webhook, '&').$this->generateSign($secret);
