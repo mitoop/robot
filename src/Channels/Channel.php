@@ -41,7 +41,7 @@ abstract class Channel
         }
 
         if ($baseUrl = $this->config->get('base_url')){
-            return rtrim($baseUrl, '/').'/'.ltrim($hook, '/');
+            return rtrim($baseUrl, '/').ltrim($hook, '/');
         }
 
         return $this->getBaseUrl().ltrim($hook, '/');
