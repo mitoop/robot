@@ -17,7 +17,7 @@
 ## 安装
 
 ```shell
-$ composer require mitoop/robot
+composer require mitoop/robot
 ```
 
 ## 使用
