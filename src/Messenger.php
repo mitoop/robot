@@ -52,7 +52,7 @@ class Messenger
 
         $robotConfig = $robot->getConfig();
 
-        $groupConfig = $robotConfig->get(sprintf('channels.%s.groups.%s', $channel, $group));
+        $groupConfig = $robotConfig->get(sprintf('channels.%s.%s', $channel, $group));
 
         if (empty($groupConfig)) {
             throw new InvalidArgumentException('未找到group: '.$channelGroup);
