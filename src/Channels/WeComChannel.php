@@ -18,6 +18,11 @@ class WeComChannel extends Channel
         return is_array($result) && isset($result['errcode']) && 0 == $result['errcode'];
     }
 
+    protected function getBaseUrl()
+    {
+        return 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=';
+    }
+
     protected function formatTextMessage($title, $content, $at)
     {
         $message = $this->formatGeneralTextMessage($title, $content);

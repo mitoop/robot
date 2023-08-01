@@ -18,6 +18,11 @@ class FeiShuChannel extends Channel
         return is_array($result) && isset($result['StatusCode']) && 0 == $result['StatusCode'];
     }
 
+    protected function getBaseUrl()
+    {
+        return 'https://open.feishu.cn/open-apis/bot/v2/hook/';
+    }
+
     protected function supportMarkdown()
     {
         return false;
@@ -39,7 +44,7 @@ class FeiShuChannel extends Channel
             $contentArr[] = [
                 [
                     'tag' => 'text',
-                    'text' => is_int($k) ? $v : sprintf('%s => %s', $k, $v),
+                    'text' => is_int($k) ? (string)$v : sprintf('%s => %s', $k, $v),
                 ],
             ];
         }

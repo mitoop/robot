@@ -61,6 +61,7 @@ class Messenger
         $groupConfig['group'] = $channelGroup;
         $groupConfig['env'] = $robotConfig->get('env');
         $groupConfig['timeout'] = isset($groupConfig['timeout']) ? $groupConfig['timeout'] : $robotConfig->get('timeout');
+        $groupConfig['base_url'] = $robotConfig->get($channel.'.base_url');
 
         $groupConfig = new Config($groupConfig);
 

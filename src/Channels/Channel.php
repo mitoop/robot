@@ -26,13 +26,25 @@ abstract class Channel
         $this->config = $config;
     }
 
+    abstract protected function getName();
+
     abstract protected function isOk($result);
 
-    abstract protected function getName();
+    abstract protected function getBaseUrl();
 
     protected function getWebhook()
     {
-        return $this->config->get('webhook');
+        $hook = $this->config->get('webhook');
+
+        if (strpos($hook, 'https://') === 0){
+            return $hook;
+        }
+
+        if ($baseUrl = $this->config->get('base_url')){
+            return rtrim($baseUrl, '/').ltrim($hook, '/');
+        }
+
+        return $this->getBaseUrl().ltrim($hook, '/');
     }
 
     protected function supportMarkdown()

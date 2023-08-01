@@ -18,6 +18,11 @@ class DingDingChannel extends Channel
         return is_array($result) && isset($result['errcode']) && 0 == $result['errcode'];
     }
 
+    protected function getBaseUrl()
+    {
+        return 'https://oapi.dingtalk.com/robot/send?access_token=';
+    }
+
     protected function getWebhook()
     {
         $webhook = $this->config->get('webhook');
