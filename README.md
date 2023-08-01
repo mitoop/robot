@@ -201,10 +201,8 @@ $config = [
     'channels' => [
         ...
         'my-channel' => [
-           'groups' => [
-               'jishu' => [
-                   'webhook' => ''
-                ],
+           'jishu' => [
+              'webhook' => ''
            ],
         ] 
     ]
