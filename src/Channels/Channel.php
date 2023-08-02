@@ -36,11 +36,11 @@ abstract class Channel
     {
         $hook = $this->config->get('webhook');
 
-        if (strpos($hook, 'https://') === 0){
+        if (strpos($hook, 'https://') === 0) {
             return $hook;
         }
 
-        if ($baseUrl = $this->config->get('base_url')){
+        if ($baseUrl = $this->config->get('base_url')) {
             return rtrim($baseUrl, '/').ltrim($hook, '/');
         }
 
@@ -76,7 +76,7 @@ abstract class Channel
      */
     public function sendMarkdownMsg($content, $at)
     {
-        if (!$this->supportMarkdown()) {
+        if (! $this->supportMarkdown()) {
             throw new UnsupportedException(sprintf('%s不支持markdown消息', $this->getName()));
         }
 
@@ -95,7 +95,7 @@ abstract class Channel
 
     protected function getMentionedList($at)
     {
-        $at = is_callable($at) ? $at($this) : (!empty($at) ? $at : $this->config->get('at', []));
+        $at = is_callable($at) ? $at($this) : (! empty($at) ? $at : $this->config->get('at', []));
 
         return array_unique(Arr::wrap($at));
     }

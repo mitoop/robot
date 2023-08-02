@@ -44,7 +44,7 @@ class Messenger
     {
         $robot = $this->robot;
 
-        list($channel, $group) = explode('.', $channelGroup);
+        [$channel, $group] = explode('.', $channelGroup);
 
         if (empty($channel) || empty($group)) {
             throw new InvalidArgumentException('group不正确: '.$channelGroup);
@@ -61,6 +61,7 @@ class Messenger
         $groupConfig['group'] = $channelGroup;
         $groupConfig['env'] = $robotConfig->get('env');
         $groupConfig['timeout'] = isset($groupConfig['timeout']) ? $groupConfig['timeout'] : $robotConfig->get('timeout');
+        $groupConfig['show_env'] = isset($groupConfig['show_env']) ? $groupConfig['show_env'] : $robotConfig->get('show_env', true);
         $groupConfig['base_url'] = $robotConfig->get(sprintf('channels.%s.base_url', $channel));
 
         $groupConfig = new Config($groupConfig);

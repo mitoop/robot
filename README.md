@@ -28,9 +28,11 @@ use Mitoop\Robot\Robot;
 $config = [
      // 默认发送的分组 支持多个
     'default' => ['feishu.jishu'],
-    // 发送消息的服务器env 如: production/development 等
+     //  bool值 是否显示服务器env 为 true 消息头部将会显示服务器env 未配置时缺省为 true
+    'show_env' => true, 
+    // 发送消息的服务器env 如: production/development/local 等, 表示消息来自哪个环境
     'env' => 'production', 
-    // HTTP 请求的超时时间(秒)
+    // 发送通知的超时时间(秒)
     'timeout' => 5, 
     // 机器人提供商 feishu : 飞书 / wecom : 企业微信 / dingding : 钉钉
     'channels' => [
@@ -38,44 +40,29 @@ $config = [
         'feishu' => [
             // demo 技术组
             'jishu' => [ 
-                // 【必填】技术组的 webhook 地址
+                // 【必填】webhook 地址, 可以只填写最后的 uuid, 当然也支持全链接
                 'webhook' => '00000000-0000-0000-0000-000000000000',
                 // 【可选】分组默认 at 的成员 手机号或者/all
                 'at' => ['all'],
-                // 【可选】默认不校验密钥 
+                // 【可选】校验密钥 
                 'secret' => '', 
-                // 【可选】默认不显示 bool值 是否显示服务器env 为 true 消息头部将会显示服务器env
-                'show_env' => true,
-                // 【可选】专门给这个群组制定HTTP请求超时时间 
-                'timeout' => 3, 
-            ],
-            // demo 客服组
-            'kefu' => [
-                'webhook' => '00000000-0000-0000-0000-000000000000',
-                'at' => ['all'],
-            ],
-            // demo boss组
-            'boss' => [
-                'webhook' => '00000000-0000-0000-0000-000000000000',
             ]
         ],
         // 企业微信 配置解释参考飞书(企业微信没有密钥校验策略)
         'wecom' => [
             'jishu' => [
+                // 【必填】webhook 地址, 可以只填写最后的 key, 当然也支持全链接
                 'webhook' => 'key',
                 'at' => ['all'], 
-                'show_env' => true,
-                'timeout' => 3, 
             ],
         ],
         // 钉钉 配置解释参考飞书
         'dingding' => [
             'jishu' => [
+                // 【必填】webhook 地址, 可以只填写最后的 access_token, 当然也支持全链接
                 'webhook' => 'access_token',
                 'at' => ['13888888888'],
-                'secret' => '',
-                'show_env' => true,
-                'timeout' => 3, 
+                'secret' => ''
             ],
         ],
     ],

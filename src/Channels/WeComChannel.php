@@ -51,7 +51,7 @@ class WeComChannel extends Channel
             $content = sprintf("**[%s]**  \n  %s", $this->config->get('env', ''), $content);
         }
 
-        if (!empty($at)) {
+        if (! empty($at)) {
             $content .= "\n";
             // 企业微信在markdown中@手机号码无效 可以直接@名字
             foreach ($at as $mentioned) {

@@ -29,7 +29,7 @@ class Config implements ArrayAccess
         }
 
         foreach (explode('.', $key) as $segment) {
-            if (!is_array($config) || !array_key_exists($segment, $config)) {
+            if (! is_array($config) || ! array_key_exists($segment, $config)) {
                 return $default;
             }
             $config = $config[$segment];

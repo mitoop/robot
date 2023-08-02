@@ -44,13 +44,13 @@ class FeiShuChannel extends Channel
             $contentArr[] = [
                 [
                     'tag' => 'text',
-                    'text' => is_int($k) ? (string)$v : sprintf('%s => %s', $k, $v),
+                    'text' => is_int($k) ? (string) $v : sprintf('%s => %s', $k, $v),
                 ],
             ];
         }
 
         $mentionedList = $at;
-        if (!empty($mentionedList)) {
+        if (! empty($mentionedList)) {
             $at = [];
             foreach ($mentionedList as $mentioned) {
                 $at[] = [

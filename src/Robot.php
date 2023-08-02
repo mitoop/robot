@@ -37,7 +37,6 @@ class Robot
      * 设置机器人分组.
      *
      * @param $group string|array 机器人分组 如: `feishu.kehu` 发给飞书中的客服组
-     *
      * @return $this
      */
     public function group($group)
@@ -50,10 +49,9 @@ class Robot
     /**
      * 发送文本信息.
      *
-     * @param string               $title   标题
-     * @param array|string         $content 消息
-     * @param array|string|Closure $at      @人员 此处设置会覆盖配置中的`at`
-     *
+     * @param  string  $title   标题
+     * @param  array|string  $content 消息
+     * @param  array|string|Closure  $at      @人员 此处设置会覆盖配置中的`at`
      * @return array
      */
     public function sendTextMsg($title, $content, $at = [])
@@ -64,9 +62,8 @@ class Robot
     /**
      * 发送markdown消息.
      *
-     * @param string|Closure       $content markdown文本
-     * @param array|string|Closure $at      @人员 此处设置会覆盖配置中的`at`
-     *
+     * @param  string|Closure  $content markdown文本
+     * @param  array|string|Closure  $at      @人员 此处设置会覆盖配置中的`at`
      * @return array
      */
     public function sendMarkdownMsg($content, $at = [])
