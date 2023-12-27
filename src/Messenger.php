@@ -9,6 +9,7 @@ namespace Mitoop\Robot;
 use Closure;
 use Mitoop\Robot\Channels\DingDingChannel;
 use Mitoop\Robot\Channels\FeiShuChannel;
+use Mitoop\Robot\Channels\LarkChannel;
 use Mitoop\Robot\Channels\WeComChannel;
 use Mitoop\Robot\Exceptions\ChannelErrorException;
 use Mitoop\Robot\Exceptions\InvalidArgumentException;
@@ -68,12 +69,14 @@ class Messenger
         $groupConfig = new Config($groupConfig);
 
         switch ($channel) {
-            case 'feishu':
-                return new FeiShuChannel($groupConfig);
-            case 'wecom':
-                return new WeComChannel($groupConfig);
             case 'dingding':
                 return new DingDingChannel($groupConfig);
+            case 'feishu':
+                return new FeiShuChannel($groupConfig);
+            case 'lark':
+                return new LarkChannel($groupConfig);
+            case 'wecom':
+                return new WeComChannel($groupConfig);
             default:
                 return $robot->createCustomChannel($channel, $groupConfig);
         }
