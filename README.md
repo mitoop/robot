@@ -34,10 +34,22 @@ $config = [
     'env' => 'production', 
     // 发送通知的超时时间(秒)
     'timeout' => 5, 
-    // 机器人提供商 feishu : 飞书 / wecom : 企业微信 / dingding : 钉钉
+    // 机器人提供商 feishu : 飞书 / wecom : 企业微信 / dingding : 钉钉 / lark : Lark
     'channels' => [
         // 飞书
         'feishu' => [
+            // demo 技术组
+            'jishu' => [ 
+                // 【必填】webhook 地址, 可以只填写最后的 uuid, 当然也支持全链接
+                'webhook' => '00000000-0000-0000-0000-000000000000',
+                // 【可选】分组默认 at 的成员 手机号或者/all
+                'at' => ['all'],
+                // 【可选】校验密钥 
+                'secret' => '', 
+            ]
+        ],
+       // 配置同 feishu 相同(v2.1 新增)
+       'lark' => [
             // demo 技术组
             'jishu' => [ 
                 // 【必填】webhook 地址, 可以只填写最后的 uuid, 当然也支持全链接
@@ -78,9 +90,9 @@ $robot->sendMarkdownMsg('### Markdown');
 
 各家机器人消息类型都有多种，而且不尽相同。
 
-我们提供两种最常用的: 发送文本消息和发送Markdown消息
+我们提供两种最常用的: 发送文本消息和发送Markdown消息, v2.1新增发送原始消息
 
-发送文本消息
+1. 发送文本消息
 
 ```php
 $robot->sendTextMsg('debug回调信息', [
@@ -94,7 +106,7 @@ $robot->sendTextMsg('debug回调信息', [
 ]);
 ```
 
-发送markdown消息(飞书目前不支持markdown消息)
+2. 发送markdown消息(飞书目前不支持markdown消息)
 
 ```php
 $markdownMessage = "### 五一值班安排 \n
@@ -125,6 +137,16 @@ $robot->group(['dingding.jishu', 'wecom.jishu'])
             return $dingdingMessage;
          }
       });
+```
+
+3. v2.1 新增发送原始消息, 发送原始消息时, 配置项中的`show_env`, `at`配置项将不起作用.
+
+```php
+$data = []; // 各家原始的消息体
+
+$robot->sendRawMsg($data);
+
+$robot->group(['dingding.jishu', 'wecom.jishu'])->sendRawMsg($data);
 ```
 
 ## 发送群组
@@ -215,15 +237,16 @@ $robot->group('my-channel.jishu')
 - [钉钉](https://developers.dingtalk.com/document/app/custom-robot-access)
 - [企业微信](https://work.weixin.qq.com/api/doc/90000/90136/91770)
 - [飞书](https://open.feishu.cn/document/ukTMukTMukTM/uMDMxEjLzATMx4yMwETM)
+- [Lark](https://open.larksuite.com/document/client-docs/bot-v3/add-custom-bot)
 
 ## ⚠️注意
 
 1. 服务商发送频率限制 
-   1. 飞书：客服反馈目前没有频率限制
+   1. 飞书(Lark同)：客服反馈目前没有频率限制
    2. 企业微信：每个机器人发送的消息不能超过20条/分钟 [点击查看详情](https://work.weixin.qq.com/api/doc/90000/90136/91770#%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E9%A2%91%E7%8E%87%E9%99%90%E5%88%B6)
    3. 钉钉：每个机器人每分钟最多发送20条。如果超过20条，会限流10分钟 [点击查看详情](https://developers.dingtalk.com/document/app/invocation-frequency-limit)
 2. 消息大小(消息字数太多，可能会发送失败)
-   1. 飞书：建议 JSON 的长度不超过 30k [点击查看详情](https://open.feishu.cn/document/ugTN1YjL4UTN24CO1UjN/uYzN1YjL2cTN24iN3UjN)
+   1. 飞书(Lark同)：建议 JSON 的长度不超过 30k [点击查看详情](https://open.feishu.cn/document/ugTN1YjL4UTN24CO1UjN/uYzN1YjL2cTN24iN3UjN)
    2. 企业微信：未找到文档 不建议太大
    3. 钉钉：未找到文档 不建议太大
 

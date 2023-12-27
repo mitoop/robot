@@ -47,6 +47,16 @@ class Robot
     }
 
     /**
+     * 发送原始信息.
+     *
+     * @return array
+     */
+    public function sendRawMsg(array $data)
+    {
+        return $this->getChannel()->sendRawMsg($data);
+    }
+
+    /**
      * 发送文本信息.
      *
      * @param  string  $title   标题
