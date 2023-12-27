@@ -15,7 +15,7 @@ class DingDingChannel extends Channel
 
     protected function isOk($result)
     {
-        return is_array($result) && isset($result['errcode']) && 0 == $result['errcode'];
+        return is_array($result) && isset($result['errcode']) && $result['errcode'] == 0;
     }
 
     protected function getBaseUrl()

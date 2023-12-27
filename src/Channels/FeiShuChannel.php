@@ -15,7 +15,7 @@ class FeiShuChannel extends Channel
 
     protected function isOk($result)
     {
-        return is_array($result) && isset($result['StatusCode']) && 0 == $result['StatusCode'];
+        return is_array($result) && isset($result['code']) && $result['code'] == 0;
     }
 
     protected function getBaseUrl()

@@ -24,7 +24,7 @@ class Config implements ArrayAccess
     {
         $config = $this->config;
 
-        if (is_null($key) || '' === trim($key)) {
+        if (is_null($key) || trim($key) === '') {
             return $config;
         }
 

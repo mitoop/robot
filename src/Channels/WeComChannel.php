@@ -15,7 +15,7 @@ class WeComChannel extends Channel
 
     protected function isOk($result)
     {
-        return is_array($result) && isset($result['errcode']) && 0 == $result['errcode'];
+        return is_array($result) && isset($result['errcode']) && $result['errcode'] == 0;
     }
 
     protected function getBaseUrl()
@@ -30,7 +30,7 @@ class WeComChannel extends Channel
         $mentionedList = $at;
         foreach ($mentionedList as $k => $v) {
             // 企业微信是`@all` 外部接口统一为 all
-            if ('all' == $v) {
+            if ($v == 'all') {
                 $mentionedList[$k] = '@all';
                 break;
             }

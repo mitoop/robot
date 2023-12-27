@@ -52,6 +52,19 @@ abstract class Channel
         return true;
     }
 
+    public function sendRawMsg(array $data)
+    {
+        $response = $this->postJson($this->getWebhook(), $data, [
+            'Content-Type' => 'application/json',
+        ]);
+
+        if ($this->isOk($response)) {
+            return $response;
+        }
+
+        throw new ChannelErrorException(sprintf('Robot请求%s出错', $this->config->get('group')), 0, $response);
+    }
+
     /**
      * @throws \Mitoop\Robot\Exceptions\ChannelErrorException
      */

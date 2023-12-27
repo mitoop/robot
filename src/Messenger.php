@@ -17,6 +17,7 @@ use Mitoop\Robot\Support\Config;
 /**
  * Class Messenger.
  *
+ * @method sendRawMsg(array $data)
  * @method sendTextMsg($title, $content, $at)
  * @method sendMarkdownMsg($content, $at)
  */
