@@ -6,9 +6,6 @@ use ArrayAccess;
 
 class Config implements ArrayAccess
 {
-    /**
-     * @var array
-     */
     protected $config;
 
     public function __construct(array $config)
@@ -34,7 +31,7 @@ class Config implements ArrayAccess
         return $config;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->config);
     }

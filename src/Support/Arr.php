@@ -4,7 +4,7 @@ namespace Mitoop\Robot\Support;
 
 class Arr
 {
-    public static function wrap($value)
+    public static function wrap($value): array
     {
         if (is_null($value)) {
             return [];

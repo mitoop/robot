@@ -9,6 +9,7 @@ use Mitoop\Robot\Channels\LarkChannel;
 use Mitoop\Robot\Channels\WeComChannel;
 use Mitoop\Robot\Exceptions\ChannelErrorException;
 use Mitoop\Robot\Exceptions\InvalidArgumentException;
+use Mitoop\Robot\Exceptions\UnsupportedException;
 use Mitoop\Robot\Support\Config;
 
 /**
@@ -24,9 +25,6 @@ class Messenger
 
     const STATUS_FAILURE = 'failure';
 
-    /**
-     * @var \Mitoop\Robot\Robot
-     */
     protected $robot;
 
     public function __construct(Robot $robot)
@@ -35,8 +33,8 @@ class Messenger
     }
 
     /**
-     * @throws \Mitoop\Robot\Exceptions\InvalidArgumentException
-     * @throws \Mitoop\Robot\Exceptions\UnsupportedException
+     * @throws InvalidArgumentException
+     * @throws UnsupportedException
      */
     protected function getChannel($channelGroup)
     {
@@ -58,8 +56,8 @@ class Messenger
 
         $groupConfig['group'] = $channelGroup;
         $groupConfig['env'] = $robotConfig->get('env');
-        $groupConfig['timeout'] = isset($groupConfig['timeout']) ? $groupConfig['timeout'] : $robotConfig->get('timeout');
-        $groupConfig['show_env'] = isset($groupConfig['show_env']) ? $groupConfig['show_env'] : $robotConfig->get('show_env', true);
+        $groupConfig['timeout'] = $groupConfig['timeout'] ?? $robotConfig->get('timeout');
+        $groupConfig['show_env'] = $groupConfig['show_env'] ?? $robotConfig->get('show_env', true);
         $groupConfig['base_url'] = $robotConfig->get(sprintf('channels.%s.base_url', $channel));
 
         $groupConfig = new Config($groupConfig);
@@ -78,7 +76,7 @@ class Messenger
         }
     }
 
-    protected function formatResult(Closure $closure)
+    protected function formatResult(Closure $closure): array
     {
         try {
             return [
@@ -92,13 +90,6 @@ class Messenger
                 'exception_file' => sprintf('%s:%s', $e->getFile(), $e->getLine()),
                 'response' => $e->getRawResponse(),
             ];
-        } catch (\Exception $e) {
-            return [
-                'status' => self::STATUS_FAILURE,
-                'exception_msg' => $e->getMessage(),
-                'exception_file' => sprintf('%s:%s', $e->getFile(), $e->getLine()),
-                'response' => null,
-            ];
         } catch (\Throwable $e) {
             return [
                 'status' => self::STATUS_FAILURE,
@@ -109,10 +100,11 @@ class Messenger
         }
     }
 
-    protected function send(Closure $closure)
+    protected function send(Closure $closure): array
     {
         $results = [];
-        $groups = $this->robot->getGroup();
+        $groups = $this->robot->getGroups();
+
         foreach ($groups as $group) {
             $results[$group] = $this->formatResult(function () use ($closure, $group) {
                 return $closure($group);
