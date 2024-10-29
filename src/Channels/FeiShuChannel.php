@@ -4,27 +4,27 @@ namespace Mitoop\Robot\Channels;
 
 class FeiShuChannel extends Channel
 {
-    protected function getName()
+    protected function getName(): string
     {
         return 'feishu';
     }
 
-    protected function isOk($result)
+    protected function isOk($result): bool
     {
         return is_array($result) && isset($result['code']) && $result['code'] == 0;
     }
 
-    protected function getBaseUrl()
+    protected function getBaseUrl(): string
     {
         return 'https://open.feishu.cn/open-apis/bot/v2/hook/';
     }
 
-    protected function supportMarkdown()
+    protected function supportMarkdown(): bool
     {
         return false;
     }
 
-    protected function generateSign($secret)
+    protected function generateSign($secret): array
     {
         $timestamp = time();
         $sign = base64_encode(hash_hmac('sha256', '', $timestamp."\n".$secret, true));
@@ -32,7 +32,7 @@ class FeiShuChannel extends Channel
         return compact('timestamp', 'sign');
     }
 
-    protected function formatTextMessage($title, $content, $at)
+    protected function formatTextMessage($title, $content, $at): array
     {
         $contentArr = [
             [

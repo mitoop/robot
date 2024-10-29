@@ -12,9 +12,6 @@ abstract class Channel
 {
     use HttpRequestTrait;
 
-    /**
-     * @var \Mitoop\Robot\Support\Config
-     */
     protected $config;
 
     public function __construct(Config $config)
@@ -22,11 +19,11 @@ abstract class Channel
         $this->config = $config;
     }
 
-    abstract protected function getName();
+    abstract protected function getName(): string;
 
-    abstract protected function isOk($result);
+    abstract protected function isOk($result): bool;
 
-    abstract protected function getBaseUrl();
+    abstract protected function getBaseUrl(): string;
 
     protected function getWebhook()
     {
@@ -43,11 +40,14 @@ abstract class Channel
         return $this->getBaseUrl().ltrim($hook, '/');
     }
 
-    protected function supportMarkdown()
+    protected function supportMarkdown(): bool
     {
         return true;
     }
 
+    /**
+     * @throws ChannelErrorException
+     */
     public function sendRawMsg(array $data)
     {
         $response = $this->postJson($this->getWebhook(), $data, [
@@ -62,7 +62,7 @@ abstract class Channel
     }
 
     /**
-     * @throws \Mitoop\Robot\Exceptions\ChannelErrorException
+     * @throws ChannelErrorException
      */
     public function sendTextMsg($title, $content, $at)
     {
@@ -80,8 +80,8 @@ abstract class Channel
     }
 
     /**
-     * @throws \Mitoop\Robot\Exceptions\ChannelErrorException
-     * @throws \Mitoop\Robot\Exceptions\UnsupportedException
+     * @throws ChannelErrorException
+     * @throws UnsupportedException
      */
     public function sendMarkdownMsg($content, $at)
     {
@@ -102,7 +102,7 @@ abstract class Channel
         throw new ChannelErrorException(sprintf('Robot请求%s出错', $this->config->get('group')), 0, $response);
     }
 
-    protected function getMentionedList($at)
+    protected function getMentionedList($at): array
     {
         $at = is_callable($at) ? $at($this) : (! empty($at) ? $at : $this->config->get('at', []));
 
@@ -114,7 +114,7 @@ abstract class Channel
         return $this->config->get('timeout') ?: 3;
     }
 
-    protected function formatGeneralTextMessage($title, $content)
+    protected function formatGeneralTextMessage($title, $content): string
     {
         $message = $title."\n\n";
         $message .= json_encode($content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
@@ -131,7 +131,7 @@ abstract class Channel
         return is_callable($content) ? $content($this) : $content;
     }
 
-    protected function getTextContent($content)
+    protected function getTextContent($content): array
     {
         return Arr::wrap($content);
     }

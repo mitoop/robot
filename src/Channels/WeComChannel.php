@@ -4,22 +4,22 @@ namespace Mitoop\Robot\Channels;
 
 class WeComChannel extends Channel
 {
-    protected function getName()
+    protected function getName(): string
     {
         return 'wecom';
     }
 
-    protected function isOk($result)
+    protected function isOk($result): bool
     {
         return is_array($result) && isset($result['errcode']) && $result['errcode'] == 0;
     }
 
-    protected function getBaseUrl()
+    protected function getBaseUrl(): string
     {
         return 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=';
     }
 
-    protected function formatTextMessage($title, $content, $at)
+    protected function formatTextMessage($title, $content, $at): array
     {
         $message = $this->formatGeneralTextMessage($title, $content);
 
@@ -41,7 +41,7 @@ class WeComChannel extends Channel
         ];
     }
 
-    protected function formatMarkdownMessage($content, $at)
+    protected function formatMarkdownMessage($content, $at): array
     {
         if ($this->config->get('show_env')) {
             $content = sprintf("**[%s]**  \n  %s", $this->config->get('env', ''), $content);

@@ -4,17 +4,17 @@ namespace Mitoop\Robot\Channels;
 
 class DingDingChannel extends Channel
 {
-    protected function getName()
+    protected function getName(): string
     {
         return 'dingding';
     }
 
-    protected function isOk($result)
+    protected function isOk($result): bool
     {
         return is_array($result) && isset($result['errcode']) && $result['errcode'] == 0;
     }
 
-    protected function getBaseUrl()
+    protected function getBaseUrl(): string
     {
         return 'https://oapi.dingtalk.com/robot/send?access_token=';
     }
@@ -30,7 +30,7 @@ class DingDingChannel extends Channel
         return $webhook;
     }
 
-    protected function formatTextMessage($title, $content, $at)
+    protected function formatTextMessage($title, $content, $at): array
     {
         $message = $this->formatGeneralTextMessage($title, $content);
 
@@ -43,7 +43,7 @@ class DingDingChannel extends Channel
         ];
     }
 
-    protected function formatMarkdownMessage($content, $at)
+    protected function formatMarkdownMessage($content, $at): array
     {
         if ($this->config->get('show_env')) {
             $content = sprintf("**[%s]**  \n  %s", $this->config->get('env', ''), $content);
@@ -59,7 +59,7 @@ class DingDingChannel extends Channel
         ];
     }
 
-    protected function generateDingDingMentionedList($mentionedList)
+    protected function generateDingDingMentionedList($mentionedList): array
     {
         $isAtAll = in_array('all', $mentionedList);
         if ($isAtAll) {
@@ -73,7 +73,7 @@ class DingDingChannel extends Channel
         ];
     }
 
-    protected function generateSign($secret)
+    protected function generateSign($secret): string
     {
         $timestamp = time() * 1000; // 钉钉单位为毫秒
         $sign = urlencode(base64_encode(hash_hmac('sha256', $timestamp."\n".$secret, $secret, true)));
