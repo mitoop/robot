@@ -34,7 +34,8 @@ class FeiShuChannel extends Channel
 
     protected function formatTextMessage($title, $content, $at): array
     {
-        $contentArr = [
+        $contentArr = [];
+        $contentArr[] = [
             [
                 'tag' => 'text',
                 'text' => json_encode($content, JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT),
