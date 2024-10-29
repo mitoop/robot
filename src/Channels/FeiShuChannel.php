@@ -38,16 +38,12 @@ class FeiShuChannel extends Channel
 
     protected function formatTextMessage($title, $content, $at)
     {
-        $contentArr = [];
-        foreach ($content as $k => $v) {
-            $v = $this->exportVar($v);
-            $contentArr[] = [
-                [
-                    'tag' => 'text',
-                    'text' => is_int($k) ? (string) $v : sprintf('%s => %s', $k, $v),
-                ],
-            ];
-        }
+        $contentArr = [
+            [
+                'tag' => 'text',
+                'text' => json_encode($content, JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT),
+            ],
+        ];
 
         $mentionedList = $at;
         if (! empty($mentionedList)) {

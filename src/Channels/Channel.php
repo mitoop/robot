@@ -118,19 +118,10 @@ abstract class Channel
         return $this->config->get('timeout') ?: 3;
     }
 
-    protected function exportVar($var)
-    {
-        return is_array($var) ? var_export($var, true) : $var;
-    }
-
     protected function formatGeneralTextMessage($title, $content)
     {
         $message = $title."\n\n";
-        foreach ($content as $k => $v) {
-            $v = $this->exportVar($v);
-            $message .= is_int($k) ? $v : sprintf('%s => %s', $k, $v);
-            $message .= "\n";
-        }
+        $message .= json_encode($content, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 
         if ($this->config->get('show_env')) {
             $message = sprintf('[%s] %s', $this->config->get('env', ''), $message);
