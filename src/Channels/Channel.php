@@ -1,9 +1,5 @@
 <?php
 
-/*
- * Today is the tomorrow you promised to act yesterday.
- */
-
 namespace Mitoop\Robot\Channels;
 
 use Mitoop\Robot\Exceptions\ChannelErrorException;

@@ -1,9 +1,5 @@
 <?php
 
-/*
- * Today is the tomorrow you promised to act yesterday.
- */
-
 namespace Mitoop\Robot\Traits;
 
 use GuzzleHttp\Client;
