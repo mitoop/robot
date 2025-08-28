@@ -34,25 +34,36 @@ class FeiShuChannel extends Channel
 
     protected function formatTextMessage($title, $content, $at): array
     {
-        $contentArr = [];
-        $contentArr[] = [
+        $lines = [];
+        foreach ($content as $key => $value) {
+            if (is_array($value) || is_object($value)) {
+                $value = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
+
+            $lines[] = sprintf('**%s:**  %s', $this->escapeLarkMd($key), $this->escapeLarkMd($value));
+        }
+
+        $elements = [
             [
-                'tag' => 'text',
-                'text' => json_encode($content, JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES + JSON_PRETTY_PRINT),
+                'tag' => 'div',
+                'text' => [
+                    'tag' => 'lark_md',
+                    'content' => implode("\n", $lines),
+                ],
             ],
         ];
 
-        $mentionedList = $at;
-        if (! empty($mentionedList)) {
-            $at = [];
-            foreach ($mentionedList as $mentioned) {
-                $at[] = [
-                    'tag' => 'at',
-                    'user_id' => $mentioned,
-                ];
-            }
-
-            $contentArr[] = $at;
+        if (! empty($at)) {
+            $mentionText = implode(' ', array_map(function ($userId) {
+                return "<at id={$userId}></at>";
+            }, $at));
+            $elements[] = [
+                'tag' => 'div',
+                'text' => [
+                    'tag' => 'lark_md',
+                    'content' => $mentionText,
+                ],
+            ];
         }
 
         if ($this->config->get('show_env')) {
@@ -60,13 +71,23 @@ class FeiShuChannel extends Channel
         }
 
         $message = [
-            'msg_type' => 'post',
-            'content' => [
-                'post' => [
-                    'zh_cn' => [
-                        'title' => $title,
-                        'content' => $contentArr,
+            'msg_type' => 'interactive',
+            'card' => [
+                'schema' => '2.0',
+                'config' => [
+                    'wide_screen_mode' => true,
+                    'enable_forward' => true,
+                ],
+                'header' => [
+                    'title' => [
+                        'tag' => 'plain_text',
+                        'content' => $title,
                     ],
+                    'template' => 'blue',
+                    'padding' => '12px 12px 12px 12px',
+                ],
+                'body' => [
+                    'elements' => $elements,
                 ],
             ],
         ];
@@ -76,5 +97,17 @@ class FeiShuChannel extends Channel
         }
 
         return $message;
+    }
+
+    protected function escapeLarkMd($text)
+    {
+        $text = (string) $text;
+        $text = str_replace('\\', '\\\\', $text);
+        $chars = ['`', '*', '_', '{', '}', '[', ']', '(', ')', '#', '+', '-', '.', '!', '>'];
+        foreach ($chars as $char) {
+            $text = str_replace($char, '\\'.$char, $text);
+        }
+
+        return $text;
     }
 }
