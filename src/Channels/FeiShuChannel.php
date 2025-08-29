@@ -101,13 +101,12 @@ class FeiShuChannel extends Channel
 
     protected function escapeLarkMd($text)
     {
-        $text = (string) $text;
-        $text = str_replace('\\', '\\\\', $text);
-        $chars = ['`', '*', '_', '{', '}', '[', ']', '(', ')', '#', '+', '-', '.', '!', '>'];
-        foreach ($chars as $char) {
-            $text = str_replace($char, '\\'.$char, $text);
-        }
-
-        return $text;
+        return preg_replace_callback(
+            '/[-_*[\]()~`>#+|{}.!]/',
+            function ($matches) {
+                return '\\'.$matches[0];
+            },
+            (string) $text
+        );
     }
 }
