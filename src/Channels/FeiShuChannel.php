@@ -84,7 +84,7 @@ class FeiShuChannel extends Channel
                         'content' => $title,
                     ],
                     'template' => 'blue',
-                    'padding' => '12px 12px 12px 12px',
+                    'padding' => '8px 12px 8px 12px',
                 ],
                 'body' => [
                     'elements' => $elements,
